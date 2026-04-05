@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { createContext, useContext, useState } from "react";
 
 const ChatContext = createContext();
@@ -23,5 +24,8 @@ export const ChatProvider = ({ children }) => {
   );
 };
 
-const useChatContext = () => useContext(ChatContext);
-export default useChatContext;
+ChatProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export const useChatContext = () => useContext(ChatContext);

@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { 
   Send, Paperclip, LogOut, Users, Hash, Smile,
   MoreVertical, Phone, Video, Search, Settings
 } from "lucide-react";
-import useChatContext from "../context/ChatContext";
+import { useChatContext } from "../context/ChatContext";
 import { useNavigate } from "react-router";
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
@@ -28,7 +28,7 @@ const ChatPage = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [onlineCount, setOnlineCount] = useState(1);
+  const [onlineCount] = useState(1);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const inputRef = useRef(null);
   const chatBoxRef = useRef(null);
@@ -36,7 +36,7 @@ const ChatPage = () => {
 
   useEffect(() => {
     if (!connected) navigate("/");
-  }, [connected, roomId, currentUser]);
+  }, [connected, navigate]);
 
   useEffect(() => {
     async function loadMessages() {
@@ -48,7 +48,7 @@ const ChatPage = () => {
       }
     }
     if (connected) loadMessages();
-  }, []);
+  }, [connected, roomId]);
 
   useEffect(() => {
     if (chatBoxRef.current) {
@@ -88,7 +88,7 @@ const ChatPage = () => {
     if (connected) {
       connectWebSocket();
     }
-  }, [roomId]);
+  }, [connected, roomId]);
 
   const sendMessage = () => {
     if (stompClient && connected && input.trim()) {
@@ -182,7 +182,7 @@ const ChatPage = () => {
 
       <main
         ref={chatBoxRef}
-        className="flex-1 overflow-y-auto px-6 py-4 space-y-4 relative z-10"
+        className="flex-1 overflow-y-auto px-6 py-4 space-y-4 relative z-10 custom-scrollbar"
         style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(255,255,255,0.2) transparent' }}
       >
         {messages.map((message, index) => (
@@ -281,44 +281,6 @@ const ChatPage = () => {
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 0.3s ease-out;
-        }
-
-        .emoji-picker-container {
-          animation: scaleIn 0.2s ease;
-        }
-
-        @keyframes scaleIn {
-          from {
-            transform: scale(0.9);
-            opacity: 0;
-          }
-          to {
-            transform: scale(1);
-            opacity: 1;
-          }
-        }
-
-        main::-webkit-scrollbar {
-          width: 6px;
-        }
-        main::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        main::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.2);
-          border-radius: 3px;
-        }
-        main::-webkit-scrollbar-thumb:hover {
-          background: rgba(255, 255, 255, 0.3);
-        }
-      `}</style>
     </div>
   );
 };

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { MessageCircle, Users, Plus, LogIn, Sparkles, RefreshCw } from "lucide-react";
 import toast from "react-hot-toast";
 import { createRoomApi, joinChatApi } from "../services/RoomService";
-import useChatContext from "../context/ChatContext";
+import { useChatContext } from "../context/ChatContext";
 import { useNavigate } from "react-router";
 
 const JoinCreateChat = () => {
@@ -14,7 +14,7 @@ const JoinCreateChat = () => {
   const [focusedField, setFocusedField] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
 
-  const { roomId, userName, setRoomId, setCurrentUser, setConnected } =
+  const { setRoomId, setCurrentUser, setConnected } =
     useChatContext();
   const navigate = useNavigate();
 
@@ -123,26 +123,6 @@ const JoinCreateChat = () => {
         ))}
       </div>
 
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(180deg); }
-        }
-        @keyframes glow {
-          0%, 100% { box-shadow: 0 0 20px rgba(139, 69, 193, 0.3); }
-          50% { box-shadow: 0 0 40px rgba(139, 69, 193, 0.6), 0 0 60px rgba(139, 69, 193, 0.4); }
-        }
-        .glow-animation {
-          animation: glow 3s ease-in-out infinite;
-        }
-        .spin {
-          animation: spin 0.5s linear infinite;
-        }
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
 
       <div className="relative w-full max-w-md">
         {/* Main card with glassmorphism effect */}
