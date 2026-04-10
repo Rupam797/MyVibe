@@ -2,6 +2,12 @@
 export function timeAgo(dateString) {
   if (!dateString) return "";
   
+  // The backend is forced into UTC timezone but omits the 'Z' metadata when serializing LocalDateTime.
+  // We explicitly append 'Z' to inform JavaScript this string represents UTC time, not local.
+  if (!dateString.endsWith('Z')) {
+    dateString += 'Z';
+  }
+  
   const date = new Date(dateString);
   const now = new Date();
   
